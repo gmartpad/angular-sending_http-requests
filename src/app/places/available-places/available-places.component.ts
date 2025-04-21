@@ -66,8 +66,6 @@ export class AvailablePlacesComponent implements OnInit {
         subscription.unsubscribe()
       }
     })
-
-
   }
 
 }
