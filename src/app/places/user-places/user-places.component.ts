@@ -37,4 +37,21 @@ export class UserPlacesComponent implements OnInit  {
       subscription.unsubscribe()
     })
   }
+
+  onSelectPlace(place: Place) {
+    this.isFetching.set(true);
+    const subscription = this.placesService.removeUserPlace(place)
+      .subscribe({
+        error: (error: Error) => {
+          this.error.set(error.message);
+        },
+        complete: () => {
+          this.isFetching.set(false)
+        }
+      })
+    
+      this.destroyRef.onDestroy(() => {
+        subscription.unsubscribe()
+      })
+  }
 }

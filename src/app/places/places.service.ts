@@ -53,7 +53,24 @@ export class PlacesService {
     )
   }
 
-  removeUserPlace(place: Place) {}
+  removeUserPlace(place: Place) {
+    const prevPlaces = this.userPlaces();
+
+    if(prevPlaces.some((p) => p.id === place.id)) {
+      console.log('prevPlaces.filter((p) => p.id !== place.id): ', prevPlaces.filter((p) => p.id !== place.id))
+      this.userPlaces.set(prevPlaces.filter((p) => p.id !== place.id))
+    }
+
+    return this.httpClient.delete(`http://localhost:3000/user-places/${place.id}`)
+      .pipe(
+        catchError((error) => {
+          this.userPlaces.set(prevPlaces);
+          const errorMessage = 'Failed to remove place. Please try again later.'
+          this.errorService.showError(errorMessage)
+          return throwError(() => new Error(errorMessage))
+        })
+      )
+  }
 
   private fetchPlaces(url: string, errorMessage: string) {
     return this.httpClient

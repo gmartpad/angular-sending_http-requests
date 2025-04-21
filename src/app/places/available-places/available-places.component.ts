@@ -52,8 +52,7 @@ export class AvailablePlacesComponent implements OnInit {
       },
       error: (error) => {
         console.error(error)
-      },
-      
+      }
     })
 
     this.destroyRef.onDestroy(() => {
